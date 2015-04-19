@@ -701,6 +701,8 @@ Note the ``404`` after the :func:`~flask.render_template` call.  This
 tells Flask that the status code of that page should be 404 which means
 not found.  By default 200 is assumed which translates to: all went well.
 
+See :ref:`error-handlers` for more details.
+
 .. _about-responses:
 
 About Responses
@@ -872,6 +874,15 @@ can do it like this::
 
     from werkzeug.contrib.fixers import LighttpdCGIRootFix
     app.wsgi_app = LighttpdCGIRootFix(app.wsgi_app)
+
+Using Flask Extensions
+----------------------
+
+Extensions are packages that help you accomplish common tasks. For
+example, Flask-SQLAlchemy provides SQLAlchemy support that makes it simple
+and easy to use with Flask.
+
+For more on Flask extensions, have a look at :ref:`extensions`.
 
 Deploying to a Web Server
 -------------------------

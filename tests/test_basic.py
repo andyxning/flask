@@ -575,6 +575,34 @@ def test_request_processing():
     assert rv == b'request|after'
 
 
+def test_request_preprocessing_early_return():
+    app = flask.Flask(__name__)
+    evts = []
+
+    @app.before_request
+    def before_request1():
+        evts.append(1)
+
+    @app.before_request
+    def before_request2():
+        evts.append(2)
+        return "hello"
+
+    @app.before_request
+    def before_request3():
+        evts.append(3)
+        return "bye"
+
+    @app.route('/')
+    def index():
+        evts.append('index')
+        return "damnit"
+
+    rv = app.test_client().get('/').data.strip()
+    assert rv == b'hello'
+    assert evts == [1, 2]
+
+
 def test_after_request_processing():
     app = flask.Flask(__name__)
     app.testing = True
@@ -1153,7 +1181,7 @@ def test_test_app_proper_environ():
 
 
 def test_exception_propagation():
-    def apprunner(configkey):
+    def apprunner(config_key):
         app = flask.Flask(__name__)
         app.config['LOGGER_HANDLER_POLICY'] = 'never'
 
