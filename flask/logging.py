@@ -24,14 +24,14 @@ def create_logger(app):
     Logger = getLoggerClass()
 
     class DebugLogger(Logger):
-        def getEffectiveLevel(x):
-            if x.level == 0 and app.debug:
+        def getEffectiveLevel(self):
+            if self.level == 0 and app.debug:
                 return DEBUG
-            return Logger.getEffectiveLevel(x)
+            return Logger.getEffectiveLevel(self)
 
     class DebugHandler(StreamHandler):
-        def emit(x, record):
-            StreamHandler.emit(x, record) if app.debug else None
+        def emit(self, record):
+            StreamHandler.emit(self, record) if app.debug else None
 
     handler = DebugHandler()
     handler.setLevel(DEBUG)
